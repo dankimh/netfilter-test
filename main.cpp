@@ -70,8 +70,8 @@ static bool filter_data(u_char *data,size_t size){
 
     bool http=false;
     for(int i=0;i<9;i++){
-        cout<<http_method[i]<<"\n";
-        dump(payload,http_method[i].size());
+        //cout<<http_method[i]<<"\n";
+        //dump(payload,http_method[i].size());
         if(!strncmp((char*)payload,http_method[i].c_str(),http_method[i].size())){
             http=true;
             break;
@@ -82,7 +82,7 @@ static bool filter_data(u_char *data,size_t size){
     next_line(&payload);
 
     string check_host=next_line(&payload);
-    cout<<"check host: "<<check_host<<"\n";
+    //cout<<"check host: "<<check_host<<"\n";
     if(check_host=="Host: "+host+"\r\n")return 0;
     else return 1;
 }

@@ -37,9 +37,11 @@ void dump(unsigned char* buf, int size) {
     printf("\n");
 }
 
-string next_line(u_char **payload){
+string next_line(u_char **payload,size_t size){
     string ret;
+    size_t limit=0;
     for(;;){
+        if(limit>size)break;
         if((*payload)[0]=='\n'){
             ret+=(*payload)[0];
             (*payload)++;
@@ -47,7 +49,9 @@ string next_line(u_char **payload){
         }
         ret+=(*payload)[0];
         (*payload)++;
+        limit++;
     }
+    return ret;
 }
 
 static bool filter_data(u_char *data,size_t size){
@@ -79,9 +83,9 @@ static bool filter_data(u_char *data,size_t size){
     }
     if(!http)return 1;
 
-    next_line(&payload);
+    next_line(&payload,size);
 
-    string check_host=next_line(&payload);
+    string check_host=next_line(&payload,size);
     //cout<<"check host: "<<check_host<<"\n";
     if(check_host=="Host: "+host+"\r\n")return 0;
     else return 1;
